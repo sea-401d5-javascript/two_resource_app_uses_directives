@@ -1,0 +1,26 @@
+<table class="ui selectable inverted table">
+  <thead>
+    <tr>
+      <th>Edit</th>
+      <th>Name</th>
+      <th>Deal</th>
+      <th>Equity</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr ng-repeat="company in companies">
+        <td ng-click="companyctrl.openModal(company._id)">
+
+        <i class="large edit middle aligned icon"></i>
+        </td>
+
+        <td>
+
+      {{company.name}}</td>
+      <td>{{company.tvDealReached}}</td>
+      <td>{{company.tvDealEquity}}</td>
+      <td>{{company.tvDealAmount}}</td>
+    </tr>
+  </tbody>
+</table>
