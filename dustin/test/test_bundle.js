@@ -35097,7 +35097,7 @@
 	const sharkListTemplate = __webpack_require__(19);
 	const sharkFormTemplate = __webpack_require__(20);
 
-	describe('shark directive', () => {
+	describe('shark directives', () => {
 	  let $httpBackend;
 	  let $scope;
 	  let $compile;
@@ -35130,6 +35130,30 @@
 	    let shark = directive.find('a')[0].innerText;
 	    expect(shark).toBe('Kevin');
 	  });
+
+
+	it('should form', () => {
+	  $httpBackend.expectGET('./templates/shark/sharks-list.html')
+	    .respond(200, sharkListTemplate);
+	    $httpBackend.expectGET('./templates/shark/shark-form.html')
+	      .respond(200, sharkFormTemplate);
+	  $scope.sharks = [{
+	    name: 'Kevin'
+	  }, {
+	    name: 'Robert'
+	  }];
+
+	  let link = $compile('<div data-ng-controller="SharkController as sharkctrl"><shark-list sharks="sharks"></shark-list></div>')
+	  let directive = link($scope);
+	  $scope.$digest();
+	  $httpBackend.flush();
+
+	  let form = directive.find('shark-form')
+
+	  console.log(form);
+	  //expect(shark).toBe('Kevin');
+	});
+
 	});
 
 

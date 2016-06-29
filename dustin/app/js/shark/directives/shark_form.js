@@ -9,7 +9,6 @@ module.exports = function (app) {
       require: '^^ngController',
       link: function ($scope, elem, attr, controller) {
         $scope.deleteShark = controller.deleteShark;
-        console.log($scope.type);
         $scope.submit = $scope.type === 'new' ? controller.addShark : controller.updateShark;
       }
     };

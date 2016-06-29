@@ -8,11 +8,10 @@ module.exports = function (app) {
     });
 
     return function (scope, element, attrs) {
-      element.on("click", function () {
+      element.on('click', function () {
         scope.company = attrs.company
-        console.log(attrs.company);
         scope.$apply(function () {
-          content = $compile(modaltemplate)(scope)
+          content = $compile(modaltemplate)(scope);
           angular.element(document.getElementById('modals')).append(content);
         });
       });
