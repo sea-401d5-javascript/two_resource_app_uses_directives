@@ -45,8 +45,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	__webpack_require__(17);
-	module.exports = __webpack_require__(18);
+	__webpack_require__(16);
+	module.exports = __webpack_require__(17);
 
 
 /***/ },
@@ -34852,7 +34852,6 @@
 	      require: '^^ngController',
 	      link: function ($scope, elem, attr, controller) {
 	        $scope.deleteShark = controller.deleteShark;
-	        console.log($scope.type);
 	        $scope.submit = $scope.type === 'new' ? controller.addShark : controller.updateShark;
 	      }
 	    };
@@ -34891,7 +34890,6 @@
 	    }.bind(this);
 
 	    this.addCompany = function (company) {
-	      console.log(company);
 	      $http.post('http://localhost:3000/companies', company)
 	        .then((res) => {
 	          this.companies.push(res.data);
@@ -34941,7 +34939,6 @@
 	module.exports = function (app) {
 	  __webpack_require__(14)(app);
 	  __webpack_require__(15)(app);
-	    __webpack_require__(16)(app);
 	};
 
 
@@ -34980,7 +34977,6 @@
 	      require: '^^ngController',
 	      link: function ($scope, elem, attr, controller) {
 	        $scope.deleteCompany = controller.deleteCompany;
-	        console.log($scope.type);
 	        $scope.submit = $scope.type === 'new' ? controller.addCompany : controller.updateCompany;
 	      }
 	    };
@@ -34990,32 +34986,6 @@
 
 /***/ },
 /* 16 */
-/***/ function(module, exports) {
-
-	module.exports = function (app) {
-	  app.directive("showmodal", function ($compile, $templateRequest) {
-	    let modaltemplate;
-	    $templateRequest('./templates/company/company-modal.html').then(function (template) {
-	      modaltemplate = template;
-	    }, function () {
-	      console.log(err);
-	    });
-
-	    return function (scope, element, attrs) {
-	      element.bind("click", function () {
-	        scope.company = attrs.company
-	        console.log(attrs.company);
-	        $scope.$watch('showmodal', function () {
-	        angular.element(document.getElementById('modals')).append($compile(modaltemplate)(scope));
-	      });
-	      });
-	    }
-	  });
-	}
-
-
-/***/ },
-/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	const angular = __webpack_require__(2);
@@ -35086,7 +35056,7 @@
 
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35094,8 +35064,8 @@
 	__webpack_require__(4);
 	__webpack_require__(5);
 
-	const sharkListTemplate = __webpack_require__(19);
-	const sharkFormTemplate = __webpack_require__(20);
+	const sharkListTemplate = __webpack_require__(18);
+	const sharkFormTemplate = __webpack_require__(19);
 
 	describe('shark directives', () => {
 	  let $httpBackend;
@@ -35114,8 +35084,8 @@
 	  it('should list sharks', () => {
 	    $httpBackend.expectGET('./templates/shark/sharks-list.html')
 	      .respond(200, sharkListTemplate);
-	      $httpBackend.expectGET('./templates/shark/shark-form.html')
-	        .respond(200, sharkFormTemplate);
+	    $httpBackend.expectGET('./templates/shark/shark-form.html')
+	      .respond(200, sharkFormTemplate);
 	    $scope.sharks = [{
 	      name: 'Kevin'
 	    }, {
@@ -35131,40 +35101,39 @@
 	    expect(shark).toBe('Kevin');
 	  });
 
-
-	it('should form', () => {
-	  $httpBackend.expectGET('./templates/shark/sharks-list.html')
-	    .respond(200, sharkListTemplate);
+	  it('should form', () => {
+	    $httpBackend.expectGET('./templates/shark/sharks-list.html')
+	      .respond(200, sharkListTemplate);
 	    $httpBackend.expectGET('./templates/shark/shark-form.html')
 	      .respond(200, sharkFormTemplate);
-	  $scope.sharks = [{
-	    name: 'Kevin'
-	  }, {
-	    name: 'Robert'
-	  }];
+	    $scope.sharks = [{
+	      name: 'Kevin'
+	    }, {
+	      name: 'Robert'
+	    }];
 
-	  let link = $compile('<div data-ng-controller="SharkController as sharkctrl"><shark-list sharks="sharks"></shark-list></div>')
-	  let directive = link($scope);
-	  $scope.$digest();
-	  $httpBackend.flush();
+	    let link = $compile('<div data-ng-controller="SharkController as sharkctrl"><shark-list sharks="sharks"></shark-list></div>');
+	    let directive = link($scope);
+	    $scope.$digest();
+	    $httpBackend.flush();
 
-	  let form = directive.find('shark-form')
+	    let form = directive.find('shark-form');
 
-	  console.log(form);
-	  //expect(shark).toBe('Kevin');
-	});
+	    console.log(form);
+	    expect(form.length).toBe(2);
+	  });
 
 	});
 
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports) {
 
 	module.exports = "<ul class=\"ui relaxed divided list\">\n  <div class=\"item\" ng-repeat=\"shark in sharks\">\n  <i ng-click=\"shark.editing = !shark.editing\" class=\"large edit middle aligned icon\"></i>\n    <div class=\"content\">\n      <a class=\"header\">{{shark.name}}</a>\n      <div class=\"description\">$X million in investment</div>\n      <shark-form ng-hide=\"!shark.editing\" type=\"edit\" shark=\"shark\"></shark-form>\n    </div>\n  </div>\n  </ul>\n";
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports) {
 
 	module.exports = "<form ng-submit=\"submit(shark)\">\n  <input type=\"text\" placeholder=\"{{shark.name}}\" ng-model=\"shark.name\"/>\n  <button type=\"submit\">{{type}}</button>\n  <button ng-show=\"type === 'edit'\" ng-click=\"deleteShark(shark)\">Delete</button>\n</form>\n";

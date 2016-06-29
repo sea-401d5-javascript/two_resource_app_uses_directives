@@ -1,6 +1,6 @@
 module.exports = function (app) {
   app.controller('SharkController', ['$http', SharkController]);
-}
+};
 
 function SharkController($http) {
 

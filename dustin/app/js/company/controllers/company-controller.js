@@ -6,15 +6,12 @@ module.exports = function (app) {
     this.companies = [];
     this.modalCompany = {};
 
-    this.openModal = function (company) {
-      this.modalCompany = company
-      let m = '#modal-' + company._id;
-      $(m)
-        .modal('show');
+    this.openModal = function (company, cb) {
+      this.modalCompany = company;
+      if (cb) cb(company);
     }.bind(this);
 
     this.addCompany = function (company) {
-      console.log(company);
       $http.post('http://localhost:3000/companies', company)
         .then((res) => {
           this.companies.push(res.data);

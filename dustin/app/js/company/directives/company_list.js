@@ -7,7 +7,16 @@ module.exports = function (app) {
       },
       require: '^^ngController',
       link: function ($scope, elem, attr, controller) {
-        $scope.openModal = controller.openModal;
+        $scope.openModal = function (company) {
+          controller.openModal(company, function(company){
+            setTimeout(() => {
+              let m = '#modal-' + company._id;
+              $(m)
+                .modal('show');
+            }, 50);
+
+          })
+        };
       }
     };
   });
