@@ -37,7 +37,6 @@ gulp.task('staticcssfiles:dev', () => {
     .pipe(gulp.dest(paths.build.main));
 });
 
-
 gulp.task('bundle', () => {
   return gulp.src(__dirname + '/app/js/client.js')
     .pipe(plumber({
@@ -53,18 +52,24 @@ gulp.task('bundle', () => {
 
 gulp.task('bundle:test', () => {
   return gulp.src(paths.dev.test)
-  .pipe(plumber({
-    errorHandler: notify.onError('Error: <%= error.message %>')
-  }))
+    .pipe(plumber({
+      errorHandler: notify.onError('Error: <%= error.message %>')
+    }))
     .pipe(webpack({
       output: {
         filename: 'test_bundle.js'
+      },
+      module: {
+        loaders: [{
+          test: /\.html$/,
+          loader: 'html'
+        }]
       }
     }))
     .pipe(gulp.dest(paths.build.test));
 });
 
-gulp.task('lint' , () => {
+gulp.task('lint', () => {
   return gulp.src([paths.dev.js, paths.dev.test])
     .pipe(lint())
     .pipe(lint.format());

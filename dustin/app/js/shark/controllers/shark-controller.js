@@ -18,7 +18,6 @@ function SharkController($http) {
   };
 
   this.updateShark = function (shark) {
-    console.log("cpm", shark);
     $http.put('http://localhost:3000/sharks', shark)
       .then(() => {
         this.sharks = this.sharks.map(n => {

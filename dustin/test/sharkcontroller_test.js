@@ -48,7 +48,7 @@ describe('Shark controller tests should', () => {
     $httpBackend.expectPUT('http://localhost:3000/sharks')
       .respond(200);
 
-    sharkctrl.updateShark({_id:'1234', name: 'Mr. Wonderful'}, {_id:'1234', name: 'Kevin'});
+    sharkctrl.updateShark({_id:'1234', name: 'Kevin'});
     $httpBackend.flush();
     expect(sharkctrl.sharks).toEqual([{_id:'1234', name: 'Kevin'}]);
   });

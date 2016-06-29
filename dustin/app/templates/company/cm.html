@@ -1,0 +1,41 @@
+
+<!-- <div ng-repeat="company in companies"> -->
+
+<div id="modal-{{company._id}}" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+    {{company.name}}
+  </div>
+  <div class="image content">
+    <div class="ui medium image"></div>
+    <div class="description">
+      <form class="ui form" ng-submit="companyctrl.updateCompany(company, updatedCompany)">
+        <div class="field">
+          <label>Company Name</label>
+          <input type="text" placeholder="{{company.name}}" ng-model="updatedCompany.name"/>
+        </div>
+        <div class="field">
+          <label>TV Deal Rached</label>
+        </div>
+        <input type="text" placeholder="{{company.tvDealReached}}" ng-model="updatedCompany.tvDealReached"/>
+        <div class="field">
+          <label>TV Deail Equity</label>
+        </div>
+        <input type="text" placeholder="{{company.tvDealEquity}}" ng-model="updatedCompany.tvDealEquity"/>
+        <div class="field">
+          <label>TV Deal Amount</label>
+        </div>
+        <input type="text" placeholder="{{company.tvDealAmount}}" ng-model="updatedCompany.tvDealAmount"/>
+        <button type="submit">Update</button>
+        <button ng-click="companyctrl.deleteCompany(company)">Delete</button>
+      </form>
+    </div>
+    <div class="actions">
+      <div class="ui black deny button">
+        Done
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>

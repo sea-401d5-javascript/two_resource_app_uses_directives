@@ -48,7 +48,7 @@ describe('Company controller tests should', () => {
     $httpBackend.expectPUT('http://localhost:3000/companies')
       .respond(200);
 
-    companyctrl.updateCompany({_id:'1234', name: 'Scrub Daddy'}, {_id:'1234', name: 'Scrub Daddy-o'});
+    companyctrl.updateCompany({_id:'1234', name: 'Scrub Daddy-o'});
     $httpBackend.flush();
     expect(companyctrl.companies).toEqual([{_id:'1234', name: 'Scrub Daddy-o'}]);
   });

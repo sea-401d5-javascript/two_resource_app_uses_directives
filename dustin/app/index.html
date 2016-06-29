@@ -75,6 +75,7 @@
               <h3 class="ui header">Sharks</h3>
               <shark-list sharks="sharkctrl.sharks"></shark-list>
             </div>
+
             <div class="six wide right floated column">
               New Shark
               <shark-form type="new" shark="{}"></shark-form>
@@ -93,10 +94,30 @@
 
               <company-form type="new" company="{}"></company-form>
 
+              <div id="modal-{{companyctrl.modalCompany._id}}" class="ui modal">
+            <i class="close icon"></i>
+            <div class="header">
+              {{companyctrl.modalCompany.name}}
+            </div>
+            <div class="image content">
+              <div class="ui medium image"></div>
+              <div class="description">
+                <company-form type="edit" company="companyctrl.modalCompany"></company-form>
+              </div>
+              <div class="actions">
+                <div class="ui black deny button">
+                  Done
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
           </div>
         </div>
         </div>
-      </div> 
+      </div>
 
       <div class="ui inverted vertical footer segment">
         <div class="ui container">
@@ -104,6 +125,9 @@
         </div>
       </div>
     </div>
+
+
+
     <script src="./bundle.js"></script>
   </body>
 

@@ -10,8 +10,9 @@
   </thead>
   <tbody>
       <tr ng-repeat="company in companies">
-        <td ng-click="companyctrl.openModal(company._id)">
-
+        <td ng-click="openModal(company)">
+         <!-- <td showmodal company="{{company}}"> -->
+        <!-- <td ng-click="shomo(company._id)"> -->
         <i class="large edit middle aligned icon"></i>
         </td>
 

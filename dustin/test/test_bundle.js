@@ -45,7 +45,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(10);
+	__webpack_require__(17);
+	module.exports = __webpack_require__(18);
 
 
 /***/ },
@@ -102,7 +103,7 @@
 	    $httpBackend.expectPUT('http://localhost:3000/companies')
 	      .respond(200);
 
-	    companyctrl.updateCompany({_id:'1234', name: 'Scrub Daddy'}, {_id:'1234', name: 'Scrub Daddy-o'});
+	    companyctrl.updateCompany({_id:'1234', name: 'Scrub Daddy-o'});
 	    $httpBackend.flush();
 	    expect(companyctrl.companies).toEqual([{_id:'1234', name: 'Scrub Daddy-o'}]);
 	  });
@@ -34736,18 +34737,18 @@
 
 	const angular = __webpack_require__(2);
 
-
 	var sharkTankApp = angular.module('SharkTankApp', []);
 	__webpack_require__(6)(sharkTankApp);
-	__webpack_require__(8)(sharkTankApp);
+	__webpack_require__(11)(sharkTankApp);
 
 
 /***/ },
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = function(app) {
+	module.exports = function (app) {
 	  __webpack_require__(7)(app);
+	  __webpack_require__(8)(app);
 	};
 
 
@@ -34757,33 +34758,15 @@
 
 	module.exports = function (app) {
 	  app.controller('SharkController', ['$http', SharkController]);
+	}
 
-	  function SharkController($http) {
-	    this.$http = $http;
-	    this.sharks = [];
-	  }
+	function SharkController($http) {
 
-	  SharkController.prototype.getSharks = function () {
-	    this.$http.get('http://localhost:3000/sharks')
-	      .then((res) => {
-	        this.sharks = res.data;
-	      }, (err) => {
-	        console.log(err);
-	      });
-	  };
+	  this.$http = $http;
+	  this.sharks = [];
 
-	  SharkController.prototype.addShark = function () {
-	    this.$http.post('http://localhost:3000/sharks', this.newShark)
-	      .then((res) => {
-	        this.sharks.push(res.data);
-	        this.newshark = null;
-	      }, (err) => {
-	        console.log(err);
-	      });
-	  };
-
-	  SharkController.prototype.deleteShark = function (shark) {
-	    this.$http.delete('http://localhost:3000/sharks/' + shark._id)
+	  this.deleteShark = (shark) => {
+	    $http.delete('http://localhost:3000/sharks/' + shark._id)
 	      .then(() => {
 	        let index = this.sharks.indexOf(shark);
 	        this.sharks.splice(index, 1);
@@ -34792,18 +34775,38 @@
 	      });
 	  };
 
-	  SharkController.prototype.updateShark = function (shark, updateShark) {
-	    shark.name = updateShark.name;
-	    this.$http.put('http://localhost:3000/sharks', shark)
+	  this.updateShark = function (shark) {
+	    $http.put('http://localhost:3000/sharks', shark)
 	      .then(() => {
 	        this.sharks = this.sharks.map(n => {
 	          return n._id === shark._id ? shark : n;
 	        });
-	      }, (err) => { 
+	      }, (err) => {
 	        console.log(err);
 	      });
-	  };
+	  }.bind(this);
 
+
+	  this.addShark = function (shark) {
+	    this.$http.post('http://localhost:3000/sharks', shark)
+	      .then((res) => {
+	        this.sharks.push(res.data);
+	        this.newshark = null;
+	      }, (err) => {
+	        console.log(err);
+	      });
+	  }.bind(this);
+
+	}
+
+
+	SharkController.prototype.getSharks = function () {
+	  this.$http.get('http://localhost:3000/sharks')
+	    .then((res) => {
+	      this.sharks = res.data;
+	    }, (err) => {
+	      console.log(err);
+	    });
 	};
 
 
@@ -34811,8 +34814,10 @@
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = function(app) {
+	module.exports = function (app) {
 	  __webpack_require__(9)(app);
+	  __webpack_require__(10)(app);
+
 	};
 
 
@@ -34821,64 +34826,196 @@
 /***/ function(module, exports) {
 
 	module.exports = function (app) {
-	  app.controller('CompanyController', ['$http', CompanyController]);
-
-	  function CompanyController($http) {
-	    this.$http = $http;
-	    this.companies = [];
-	    this.openModal = function (modal) {
-	     let m = '#modal-' + modal;
-	     $(m)
-	       .modal('show');
+	  app.directive('sharkList', function () {
+	    return {
+	      templateUrl: './templates/shark/sharks-list.html',
+	      scope: {
+	        sharks: '='
+	      }
 	    };
-	  }
-
-	  CompanyController.prototype.getCompanies = function () {
-	    this.$http.get('http://localhost:3000/companies')
-	      .then((res) => {
-	        this.companies = res.data;
-	      }, (err) => {
-	        console.log(err);
-	      });
-	  };
-
-	  CompanyController.prototype.addCompany = function () {
-	    this.$http.post('http://localhost:3000/companies', this.newCompany)
-	      .then((res) => {
-	        this.companies.push(res.data);
-	        this.newcompany = null;
-	      }, (err) => {
-	        console.log(err);
-	      });
-	  };
-
-	  CompanyController.prototype.deleteCompany = function (company) {
-	    this.$http.delete('http://localhost:3000/companies/' + company._id)
-	      .then(() => {
-	        let index = this.companies.indexOf(company);
-	        this.companies.splice(index, 1);
-	      }, (err) => {
-	        console.log(err);
-	      });
-	  };
-
-	  CompanyController.prototype.updateCompany = function (company, updateCompany) {
-	    company.name = updateCompany.name;
-	    this.$http.put('http://localhost:3000/companies', company)
-	      .then(() => {
-	        this.companies = this.companies.map(n => {
-	          return n._id === company._id ? company : n;
-	        });
-	      }, (err) => {
-	        console.log(err); 
-	      });
-	  };
-
+	  });
 	};
 
 
 /***/ },
 /* 10 */
+/***/ function(module, exports) {
+
+	module.exports = function (app) {
+	  app.directive('sharkForm', function () {
+	    return {
+	      templateUrl: './templates/shark/shark-form.html',
+	      scope: {
+	        shark: '=',
+	        type: '@'
+	      },
+	      require: '^^ngController',
+	      link: function ($scope, elem, attr, controller) {
+	        $scope.deleteShark = controller.deleteShark;
+	        console.log($scope.type);
+	        $scope.submit = $scope.type === 'new' ? controller.addShark : controller.updateShark;
+	      }
+	    };
+	  });
+	};
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function(app) {
+	  __webpack_require__(12)(app);
+	  __webpack_require__(13)(app);
+
+	};
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	module.exports = function (app) {
+	  app.controller('CompanyController', ['$http', CompanyController]);
+
+	  function CompanyController($http) {
+	    this.$http = $http;
+	    this.companies = [];
+	    this.modalCompany = {};
+
+	    this.openModal = function (company) {
+	      this.modalCompany = company
+	      let m = '#modal-' + company._id;
+	      $(m)
+	        .modal('show');
+	    }.bind(this);
+
+	    this.addCompany = function (company) {
+	      console.log(company);
+	      $http.post('http://localhost:3000/companies', company)
+	        .then((res) => {
+	          this.companies.push(res.data);
+	          this.newcompany = null;
+	        }, (err) => {
+	          console.log(err);
+	        });
+	    }.bind(this);
+
+	    this.deleteCompany = (company) => {
+	      $http.delete('http://localhost:3000/companies/' + company._id)
+	        .then(() => {
+	          let index = this.companies.indexOf(company);
+	          this.companies.splice(index, 1);
+	        }, (err) => {
+	          console.log(err);
+	        });
+	    };
+
+	    this.getCompanies = function () {
+	      this.$http.get('http://localhost:3000/companies')
+	        .then((res) => {
+	          this.companies = res.data;
+	        }, (err) => {
+	          console.log(err);
+	        });
+	    };
+
+	    this.updateCompany = function (company) {
+	      this.$http.put('http://localhost:3000/companies', company)
+	        .then(() => {
+	          this.companies = this.companies.map(n => {
+	            return n._id === company._id ? company : n;
+	          });
+	        }, (err) => {
+	          console.log(err);
+	        });
+	    }.bind(this);
+	  }
+	};
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function (app) {
+	  __webpack_require__(14)(app);
+	  __webpack_require__(15)(app);
+	    __webpack_require__(16)(app);
+	};
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports) {
+
+	module.exports = function (app) {
+	  app.directive('companyList', function () {
+	    return {
+	      templateUrl: './templates/company/company-list.html',
+	      scope: {
+	        companies: '='
+	      },
+	      require: '^^ngController',
+	      link: function ($scope, elem, attr, controller) {
+	        $scope.openModal = controller.openModal;
+	      }
+	    };
+	  });
+	};
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	module.exports = function (app) {
+	  app.directive('companyForm', function () {
+	    return {
+	      templateUrl: './templates/company/company-form.html',
+	      scope: {
+	        company: '=',
+	        type: '@'
+	      },
+	      require: '^^ngController',
+	      link: function ($scope, elem, attr, controller) {
+	        $scope.deleteCompany = controller.deleteCompany;
+	        console.log($scope.type);
+	        $scope.submit = $scope.type === 'new' ? controller.addCompany : controller.updateCompany;
+	      }
+	    };
+	  });
+	};
+
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	module.exports = function (app) {
+	  app.directive("showmodal", function ($compile, $templateRequest) {
+	    let modaltemplate;
+	    $templateRequest('./templates/company/company-modal.html').then(function (template) {
+	      modaltemplate = template;
+	    }, function () {
+	      console.log(err);
+	    });
+
+	    return function (scope, element, attrs) {
+	      element.bind("click", function () {
+	        scope.company = attrs.company
+	        console.log(attrs.company);
+	        $scope.$watch('showmodal', function () {
+	        angular.element(document.getElementById('modals')).append($compile(modaltemplate)(scope));
+	      });
+	      });
+	    }
+	  });
+	}
+
+
+/***/ },
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	const angular = __webpack_require__(2);
@@ -34931,7 +35068,7 @@
 	    $httpBackend.expectPUT('http://localhost:3000/sharks')
 	      .respond(200);
 
-	    sharkctrl.updateShark({_id:'1234', name: 'Mr. Wonderful'}, {_id:'1234', name: 'Kevin'});
+	    sharkctrl.updateShark({_id:'1234', name: 'Kevin'});
 	    $httpBackend.flush();
 	    expect(sharkctrl.sharks).toEqual([{_id:'1234', name: 'Kevin'}]);
 	  });
@@ -34947,6 +35084,66 @@
 	  });
 	});
 
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	const angular = __webpack_require__(2);
+	__webpack_require__(4);
+	__webpack_require__(5);
+
+	const sharkListTemplate = __webpack_require__(19);
+	const sharkFormTemplate = __webpack_require__(20);
+
+	describe('shark directive', () => {
+	  let $httpBackend;
+	  let $scope;
+	  let $compile;
+
+	  beforeEach(() => {
+	    angular.mock.module('SharkTankApp');
+	    angular.mock.inject(function (_$httpBackend_, $rootScope, _$compile_) {
+	      $scope = $rootScope.$new();
+	      $compile = _$compile_;
+	      $httpBackend = _$httpBackend_;
+	    });
+	  });
+
+	  it('should list sharks', () => {
+	    $httpBackend.expectGET('./templates/shark/sharks-list.html')
+	      .respond(200, sharkListTemplate);
+	      $httpBackend.expectGET('./templates/shark/shark-form.html')
+	        .respond(200, sharkFormTemplate);
+	    $scope.sharks = [{
+	      name: 'Kevin'
+	    }, {
+	      name: 'Robert'
+	    }];
+
+	    let link = $compile('<div data-ng-controller="SharkController as sharkctrl"><shark-list sharks="sharks"></shark-list></div>')
+	    let directive = link($scope);
+	    $scope.$digest();
+	    $httpBackend.flush();
+
+	    let shark = directive.find('a')[0].innerText;
+	    expect(shark).toBe('Kevin');
+	  });
+	});
+
+
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	module.exports = "<ul class=\"ui relaxed divided list\">\n  <div class=\"item\" ng-repeat=\"shark in sharks\">\n  <i ng-click=\"shark.editing = !shark.editing\" class=\"large edit middle aligned icon\"></i>\n    <div class=\"content\">\n      <a class=\"header\">{{shark.name}}</a>\n      <div class=\"description\">$X million in investment</div>\n      <shark-form ng-hide=\"!shark.editing\" type=\"edit\" shark=\"shark\"></shark-form>\n    </div>\n  </div>\n  </ul>\n";
+
+/***/ },
+/* 20 */
+/***/ function(module, exports) {
+
+	module.exports = "<form ng-submit=\"submit(shark)\">\n  <input type=\"text\" placeholder=\"{{shark.name}}\" ng-model=\"shark.name\"/>\n  <button type=\"submit\">{{type}}</button>\n  <button ng-show=\"type === 'edit'\" ng-click=\"deleteShark(shark)\">Delete</button>\n</form>\n";
 
 /***/ }
 /******/ ]);
