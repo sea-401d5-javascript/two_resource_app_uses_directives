@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>App</title>
+    <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="semantic/semantic.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="app.css">
+
+    <script>
+      $(document).ready(function() {
+
+        // fix menu when passed
+        $('.masthead').visibility({
+          once: false,
+          onBottomPassed: function() {
+            $('.fixed.menu').transition('fade in');
+          },
+          onBottomPassedReverse: function() {
+            $('.fixed.menu').transition('fade out');
+          }
+        });
+
+        // create sidebar and attach to menu open
+        $('.ui.sidebar').sidebar('attach events', '.toc.item');
+
+      })
+    </script>
+  </head>
+  <body data-ng-app="SharkTankApp">
+
+    <!-- Following Menu -->
+    <div class="ui large top fixed hidden menu">
+      <div class="ui container">
+        <a class="active item">Home</a>
+
+      </div>
+    </div>
+
+    <!-- Page Contents -->
+    <div class="pusher">
+      <div id="shark" class="ui inverted vertical masthead center aligned segment">
+
+        <div class="ui container">
+          <div class="ui large secondary inverted pointing menu">
+            <a class="toc item">
+              <i class="sidebar icon"></i>
+            </a>
+            <a class="active item">Home</a>
+
+            <!-- <div class="right item">
+              <a class="ui inverted button">Log in</a>
+              <a class="ui inverted button">Sign Up</a>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="ui text container">
+          <h1 class="ui inverted header">
+            Shark Tank App
+          </h1>
+          <h2>Explore deals and companies from the Tank</h2>
+          <div class="ui huge primary button">Get Started
+            <i class="right arrow icon"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ui vertical stripe segment">
+        <div class="ui middle aligned stackable grid container">
+          <div class="row" data-ng-controller="SharkController as sharkctrl" ng-cloak data-ng-init="sharkctrl.getSharks()">
+            <div class="eight wide column">
+              <h3 class="ui header">Sharks</h3>
+              <shark-list sharks="sharkctrl.sharks"></shark-list>
+            </div>
+
+            <div class="six wide right floated column">
+              New Shark
+              <shark-form type="new" shark="{}"></shark-form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="segment">
+        <div class="ui middle aligned stackable grid container">
+          <div class="row" data-ng-controller="CompanyController as companyctrl" ng-cloak data-ng-init="companyctrl.getCompanies()">
+            <div class="sixteen wide column">
+              <p>
+                total investment: {{companyctrl.totalamount}}
+              </p>
+
+            <company-list companies="companyctrl.companies"></company-list>
+
+
+              <company-form type="new" company="{}"></company-form>
+
+              <div id="modal-{{companyctrl.modalCompany._id}}" class="ui modal">
+            <i class="close icon"></i>
+            <div class="header">
+              {{companyctrl.modalCompany.name}}
+            </div>
+            <div class="image content">
+              <div class="ui medium image"></div>
+              <div class="description">
+                <company-form type="edit" company="companyctrl.modalCompany"></company-form>
+              </div>
+              <div class="actions">
+                <div class="ui black deny button">
+                  Done
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <div class="ui inverted vertical footer segment">
+        <div class="ui container">
+          <div class="ui stackable inverted divided equal height stackable grid"></div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <script src="./bundle.js"></script>
+  </body>
+
+</html>

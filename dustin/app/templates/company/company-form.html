@@ -1,0 +1,20 @@
+<form class="ui form" ng-submit="submit(company)">
+  <div class="field">
+    <label>Company Name</label>
+    <input type="text" placeholder="name" ng-model="company.name"/>
+  </div>
+  <div class="field">
+    <label>TV Deal Rached</label>
+  </div>
+  <input type="text" placeholder="TRUE/FALSE" ng-model="company.tvDealReached"/>
+  <div class="field">
+    <label>TV Deail Equity</label>
+  </div>
+  <input type="text" placeholder=".15" ng-model="company.tvDealEquity"/>
+  <div class="field">
+    <label>TV Deal Amount</label>
+  </div>
+  <input type="text" placeholder="250000" ng-model="company.tvDealAmount"/>
+  <button type="submit">Update</button>
+  <button ng-show="type === 'edit'" ng-click="deleteCompany(company)">Delete</button>
+</form>

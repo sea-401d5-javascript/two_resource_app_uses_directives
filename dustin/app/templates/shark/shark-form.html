@@ -1,0 +1,5 @@
+<form ng-submit="submit(shark)">
+  <input type="text" placeholder="{{shark.name}}" ng-model="shark.name"/>
+  <button type="submit">{{type}}</button>
+  <button ng-show="type === 'edit'" ng-click="deleteShark(shark)">Delete</button>
+</form>

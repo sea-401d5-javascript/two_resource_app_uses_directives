@@ -1,0 +1,10 @@
+<ul class="ui relaxed divided list">
+  <div class="item" ng-repeat="shark in sharks">
+  <i ng-click="shark.editing = !shark.editing" class="large edit middle aligned icon"></i>
+    <div class="content">
+      <a class="header">{{shark.name}}</a>
+      <div class="description">$X million in investment</div>
+      <shark-form ng-hide="!shark.editing" type="edit" shark="shark"></shark-form>
+    </div>
+  </div>
+  </ul>
