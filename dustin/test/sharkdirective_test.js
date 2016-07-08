@@ -31,7 +31,7 @@ describe('shark directives', () => {
       name: 'Robert'
     }];
 
-    let link = $compile('<div data-ng-controller="SharkController as sharkctrl"><shark-list sharks="sharks"></shark-list></div>')
+    let link = $compile('<div data-ng-controller="SharkController as sharkctrl"><shark-list sharks="sharks"></shark-list></div>');
     let directive = link($scope);
     $scope.$digest();
     $httpBackend.flush();

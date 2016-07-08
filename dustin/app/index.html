@@ -40,7 +40,7 @@
 
     <!-- Page Contents -->
     <div class="pusher">
-      <div class="ui inverted vertical masthead center aligned segment">
+      <div id="shark" class="ui inverted vertical masthead center aligned segment">
 
         <div class="ui container">
           <div class="ui large secondary inverted pointing menu">
@@ -89,8 +89,12 @@
         <div class="ui middle aligned stackable grid container">
           <div class="row" data-ng-controller="CompanyController as companyctrl" ng-cloak data-ng-init="companyctrl.getCompanies()">
             <div class="sixteen wide column">
+              <p>
+                total investment: {{companyctrl.totalamount}}
+              </p>
 
             <company-list companies="companyctrl.companies"></company-list>
+
 
               <company-form type="new" company="{}"></company-form>
 

@@ -4,7 +4,6 @@ module.exports = function (app) {
 
 function SharkController($http) {
 
-  this.$http = $http;
   this.sharks = [];
 
   this.deleteShark = (shark) => {
@@ -28,7 +27,6 @@ function SharkController($http) {
       });
   }.bind(this);
 
-
   this.addShark = function (shark) {
     this.$http.post('http://localhost:3000/sharks', shark)
       .then((res) => {
@@ -39,14 +37,12 @@ function SharkController($http) {
       });
   }.bind(this);
 
+  this.getSharks = function () {
+    $http.get('http://localhost:3000/sharks')
+      .then((res) => {
+        this.sharks = res.data;
+      }, (err) => {
+        console.log(err);
+      });
+  };
 }
-
-
-SharkController.prototype.getSharks = function () {
-  this.$http.get('http://localhost:3000/sharks')
-    .then((res) => {
-      this.sharks = res.data;
-    }, (err) => {
-      console.log(err);
-    });
-};

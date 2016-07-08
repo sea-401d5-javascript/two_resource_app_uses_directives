@@ -34758,7 +34758,7 @@
 
 	module.exports = function (app) {
 	  app.controller('SharkController', ['$http', SharkController]);
-	}
+	};
 
 	function SharkController($http) {
 
@@ -34882,11 +34882,9 @@
 	    this.companies = [];
 	    this.modalCompany = {};
 
-	    this.openModal = function (company) {
-	      this.modalCompany = company
-	      let m = '#modal-' + company._id;
-	      $(m)
-	        .modal('show');
+	    this.openModal = function (company, cb) {
+	      this.modalCompany = company;
+	      if (cb) cb(company);
 	    }.bind(this);
 
 	    this.addCompany = function (company) {
@@ -34955,7 +34953,15 @@
 	      },
 	      require: '^^ngController',
 	      link: function ($scope, elem, attr, controller) {
-	        $scope.openModal = controller.openModal;
+	        $scope.openModal = function (company) {
+	          controller.openModal(company, function(company){
+	            setTimeout(() => {
+	              let m = '#modal-' + company._id;
+	              $(m)
+	                .modal('show');
+	            }, 50);
+	          });
+	        };
 	      }
 	    };
 	  });
@@ -35092,7 +35098,7 @@
 	      name: 'Robert'
 	    }];
 
-	    let link = $compile('<div data-ng-controller="SharkController as sharkctrl"><shark-list sharks="sharks"></shark-list></div>')
+	    let link = $compile('<div data-ng-controller="SharkController as sharkctrl"><shark-list sharks="sharks"></shark-list></div>');
 	    let directive = link($scope);
 	    $scope.$digest();
 	    $httpBackend.flush();

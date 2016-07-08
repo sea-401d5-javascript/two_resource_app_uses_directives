@@ -1,3 +1,10 @@
+#shark {
+  background: url('http://cdn1.thr.com/sites/default/files/2014/02/shark_tank.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;;
+}
 .hidden.menu {
   display: none;
 }
@@ -12,7 +19,7 @@
 .masthead .ui.menu .ui.button {
   margin-left: 0.5em;
 }
-.masthead h1.ui.header {   
+.masthead h1.ui.header {
   margin-top: 3em;
   margin-bottom: 0em;
   font-size: 4em;

@@ -1,7 +1,7 @@
 module.exports = function (app) {
-  app.controller('CompanyController', ['$http', CompanyController]);
+  app.controller('CompanyController', ['$http','totals', CompanyController]);
 
-  function CompanyController($http) {
+  function CompanyController($http, totals) {
     this.$http = $http;
     this.companies = [];
     this.modalCompany = {};
@@ -35,6 +35,7 @@ module.exports = function (app) {
       this.$http.get('http://localhost:3000/companies')
         .then((res) => {
           this.companies = res.data;
+          this.totalamount = totals.amount(this.companies);
         }, (err) => {
           console.log(err);
         });

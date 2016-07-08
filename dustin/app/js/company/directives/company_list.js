@@ -14,8 +14,7 @@ module.exports = function (app) {
               $(m)
                 .modal('show');
             }, 50);
-
-          })
+          });
         };
       }
     };
